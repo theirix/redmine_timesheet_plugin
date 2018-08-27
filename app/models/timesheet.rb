@@ -81,8 +81,8 @@ class Timesheet
       self.sort = :project
     end
 
-    self.date_from = options[:date_from] || Date.today.to_s
-    self.date_to = options[:date_to] || Date.today.to_s
+    self.date_from = init_from_date_option(options[:date_from])
+    self.date_to = init_from_date_option(options[:date_to])
     self.spent_on=options[:spent_on]
 
     if options[:period_type] && ValidPeriodType.values.include?(options[:period_type].to_i)
@@ -91,6 +91,19 @@ class Timesheet
       self.period_type = ValidPeriodType[:free_period]
     end
     self.period = options[:period] || nil
+  end
+
+  # Parse Date from options
+  def init_from_date_option(date_or_str)
+    if date_or_str && date_or_str.is_a?(Date)
+      # it is a date
+      return date_or_str
+    end
+    if date_or_str && date_or_str.respond_to?(:to_str)
+      # it is a string
+      return Date.parse(date_or_str)
+    end
+    return Date.today
   end
 
   # Gets all the time_entries for all the projects
