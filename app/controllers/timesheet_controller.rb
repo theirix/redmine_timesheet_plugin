@@ -155,8 +155,8 @@ class TimesheetController < ApplicationController
 
     if timesheet
       session[SessionKey] ||= {}
-      session[SessionKey]['date_from'] = timesheet.date_from
-      session[SessionKey]['date_to'] = timesheet.date_to
+      session[SessionKey]['date_from'] = timesheet.date_from.to_s
+      session[SessionKey]['date_to'] = timesheet.date_to.to_s
     end
   end
 
