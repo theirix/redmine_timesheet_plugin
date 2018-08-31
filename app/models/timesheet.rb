@@ -101,7 +101,11 @@ class Timesheet
     end
     if date_or_str && date_or_str.respond_to?(:to_str)
       # it is a string
-      return Date.parse(date_or_str)
+      begin
+        return Date.parse(date_or_str)
+      rescue Exception => e
+        return Date.today
+      end
     end
     return Date.today
   end
