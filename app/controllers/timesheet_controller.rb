@@ -2,7 +2,7 @@ class TimesheetController < ApplicationController
   unloadable
 
   layout 'base'
-  if self.respond_to?(:before_filter)  # < Rails 5
+  if Rails::VERSION::MAJOR < 5  # < Rails 5
     before_filter :get_list_size
     before_filter :get_precision
     before_filter :get_activities
