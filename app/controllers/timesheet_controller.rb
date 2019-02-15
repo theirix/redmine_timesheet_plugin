@@ -2,9 +2,15 @@ class TimesheetController < ApplicationController
   unloadable
 
   layout 'base'
-  before_filter :get_list_size
-  before_filter :get_precision
-  before_filter :get_activities
+  if Rails::VERSION::MAJOR < 5  # < Rails 5
+    before_filter :get_list_size
+    before_filter :get_precision
+    before_filter :get_activities
+  else  # >= Rails 5
+    before_action :get_list_size
+    before_action :get_precision
+    before_action :get_activities
+  end
 
   helper :sort
   include SortHelper
