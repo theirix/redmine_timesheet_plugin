@@ -1,23 +1,24 @@
 <div id="timesheet-form">
-  <%= form_for :timesheet, :url =>{:action => 'report'} do |f|  %>
+  <%= form_for @timesheet, url: {action: 'report'} do |f|  %>
     <fieldset>
       <div>
         <div class="radiobutton-label">
-          <%= radio_button_tag 'timesheet[period_type]', '1', @timesheet.period_type == Timesheet::ValidPeriodType[:default] %>
-          <label for="timesheet_period_type_1"><%= l(:timesheet_date_range_label)%></label>
+          <%= f.radio_button :period_type, Timesheet::ValidPeriodType[:default]  %>
+          <%f.label :period_type, l(:timesheet_date_range_label)%>
+          <label for="timesheet_period_type_1"><%= %></label>
         </div>
-        <%= select_tag 'timesheet[period]', options_for_period_select((params[:timesheet].nil? ? nil : params[:timesheet][:period])),
-          :id => 'select_timesheet_period_type_1', :onfocus => '$("timesheet_period_type_1").checked = true;'%>
+        <%= select_tag 'timesheet[period]', options_for_period_select((params[:timesheet].nil? ? @timesheet.period : params[:timesheet][:period])),
+          id: 'select_timesheet_period_type_1', :onfocus => '$("timesheet_period_type_1").checked = true;'%>
       </div>
       <div>
         <div class="radiobutton-label">
-          <%= radio_button_tag 'timesheet[period_type]', '2', @timesheet.period_type  == Timesheet::ValidPeriodType[:free_period] %>
-          <label for="timesheet_date_from"><%= l(:timesheet_date_from_label)%></label>
+          <%= f.radio_button :period_type, Timesheet::ValidPeriodType[:free_period] %>
+          <%=  f.label :date_from, l(:timesheet_date_from_label)%>
         </div>
         <span id="select_timesheet_period_type_2" onclick="$('#timesheet_period_type_2').checked = true;">
-          <%= f.date_field "date_from", :size => 10 %><%= calendar_for('timesheet_date_from') %>
-          <label for="timesheet_date_to"><%= l(:timesheet_date_to_label)%></label>
-          <%= f.date_field "date_to", :size => 10 %><%= calendar_for('timesheet_date_to') %>
+          <%= f.date_field :date_from, size: 10, value: f.object.date_from %><%= calendar_for('timesheet_date_from') %>
+          <%=  f.label :date_to, l(:timesheet_date_to_label)%>
+          <%= f.date_field :date_to, size: 10, value: f.object.date_to %><%= calendar_for('timesheet_date_to') %>
         </span>
       </div>
       
@@ -28,25 +29,25 @@
       
       <div class="timesheet-projects">
         <label for="timesheet_projects_" class="select-all"><%= l(:timesheet_project_label)%></label>
-        <%= select_tag 'timesheet[projects][]', project_options(@timesheet), { :multiple => true, :size => @list_size} %>
+        <%= select_tag 'timesheet[projects][]', project_options(@timesheet), { multiple: true, size: @list_size} %>
       </div>
       <div class="timesheet-activities">
         <label for="timesheet_activities_" class="select-all"><%= l(:timesheet_activities_label)%></label>
-        <%= select_tag 'timesheet[activities][]', activity_options(@timesheet, @activities), { :multiple => true, :size => @list_size} %>
+        <%= select_tag 'timesheet[activities][]', activity_options(@timesheet, @activities), { multiple: true, size: @list_size} %>
       </div>
       <div class="timesheet-users">
         <label for="timesheet_users_" class="select-all"><%= l(:timesheet_users_label)%></label>
-        <%= select_tag 'timesheet[users][]', user_options(@timesheet), { :multiple => true, :size => @list_size} %>
+        <%= select_tag 'timesheet[users][]', user_options(@timesheet), { multiple: true, size: @list_size} %>
       </div>
       <% if User.current.allowed_to?(:see_all_project_timesheets, nil, :global => true) %>
         <div class="timesheet-groups">
           <label for="timesheet_groups_" class="select-all"><%= l(:timesheet_groups_label)%></label>
-          <%= select_tag 'timesheet[groups][]', group_options(@timesheet), { :multiple => true, :size => @list_size} %>
+          <%= select_tag 'timesheet[groups][]', group_options(@timesheet), { multiple: true, size: @list_size} %>
         </div>
       <% end %>
       <div class="timesheet-trackers">
         <label for="timesheet_trackers_" class="select-all"><%= l(:label_tracker_plural)%></label>
-        <%= select_tag 'timesheet[trackers][]', tracker_options(@timesheet), { :multiple => true, :size => @list_size} %>
+        <%= select_tag 'timesheet[trackers][]', tracker_options(@timesheet), { multiple: true, size: @list_size} %>
       </div>
       <%= call_hook(:plugin_timesheet_view_timesheet_form, { :timesheet => @timesheet, :params => params, :list_size => @list_size }) %>
       <div class="form-actions">

@@ -1,4 +1,6 @@
 class Timesheet
+  extend ActiveModel::Naming
+  include ActiveModel::Conversion
   attr_accessor :date_from, :date_to, :projects, :activities, :users, :groups, :trackers,
     :allowed_projects, :period, :period_type
 
