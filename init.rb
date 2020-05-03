@@ -8,6 +8,9 @@ require 'redmine'
 #  FCSV = CSV
 #end
 
+require 'csv'
+FCSV = CSV
+
 if Rails::VERSION::MAJOR < 3
   require 'dispatcher'
   object_to_prepare = Dispatcher
